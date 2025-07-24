@@ -1,11 +1,11 @@
 pipeline{
   agent any
 
-  trigger {
+  triggers {
      githubPush()
   }
 
-  enviroment {
+  environment {
      DOCKER_BUILDKIT = 1
   }
 
@@ -23,7 +23,7 @@ pipeline{
 	}
 	steps {
 	    echo 'Ejecuentando despliegue..'
-	    sh 'chmod +x scripts/deploy.sh'y
+	    sh 'chmod +x scripts/deploy.sh'
 	    sh './scripts/deploy.sh'
 	}
      }
