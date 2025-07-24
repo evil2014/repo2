@@ -1,13 +1,12 @@
 #!/bin/bash
 
-echo "Iniciando despliegue..."
+echo  "Limpiando contenedores anteriores..."
 
-#Navega al directorio raiz del proyecto
-cd "$(dirnamee "$0")/.."
+# Detener y eliminar los servicios definidos en docker-compose.prod.yml
+docker compose -f docker-compose.prod.yml down
 
+echo " Desplegando servidor Nginx limpio..."
+docker compose -f docker-compose.prod.yml up -d --build
 
-#Ejecutar docker-compose con la configuración de producción
+echo "Despliegue completado correctamente."
 
-docker-composer -f docker-compose.prod.yml up -d --build
-
-echo "Despliegue correcto"

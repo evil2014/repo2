@@ -1,31 +1,33 @@
-pipeline{
-  agent any
+pipeline {
+    agent any
 
-  triggers {
-     githubPush()
-  }
+    triggers {
+        githubPush()
+    }
 
-  environment {
-     DOCKER_BUILDKIT = 1
-  }
+    environment {
+        DOCKER_BUILDKIT = "1"
+    }
 
-  
-  stages {
-     stage('Clonar cógigo') {
-	steps {
- 	   checkout scm
-	}
-     }
+    stages {
+        stage('Clonar código') {
+            steps {
+                checkout scm
+            }
+        }
 
-     stage('Desplegar servicio') {
-	when {
-	    branch 'main'	
-	}
-	steps {
-	    echo 'Ejecuentando despliegue..'
-	    sh 'chmod +x scripts/deploy.sh'
-	    sh './scripts/deploy.sh'
-	}
-     }
-  }
+        stage('Desplegar servicio') {
+            when {
+                expression {
+                    return env.GIT_BRANCH == 'origin/main' || env.BRANCH_NAME == 'main'
+                }
+            }
+            steps {
+                echo 'Iniciando despliegue de prueba con Nginx...'
+                sh 'chmod +x scripts/deploy.sh'
+                sh './scripts/deploy.sh'
+            }
+        }
+    }
 }
+
